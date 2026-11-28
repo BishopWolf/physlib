@@ -271,6 +271,8 @@ public import PhyslibAlpha.Mathematics.AlgebraRepresentation
 public import PhyslibAlpha.Mathematics.Analysis.LocalOperator
 public import PhyslibAlpha.Mathematics.Analysis.Normed.HolderDual
 public import PhyslibAlpha.Mathematics.Analysis.RealBounds
+public import PhyslibAlpha.Mathematics.Analysis.SecondDifference
+public import PhyslibAlpha.Mathematics.Calculus.CoordDeriv
 public import PhyslibAlpha.Mathematics.Calculus.IteratedFDerivBounds
 public import PhyslibAlpha.Mathematics.Calculus.ParametricIntegral
 public import PhyslibAlpha.Mathematics.Calculus.SmoothDistance
@@ -295,6 +297,7 @@ public import PhyslibAlpha.Mathematics.Distribution.TimeSliceFourier
 public import PhyslibAlpha.Mathematics.Distribution.TimeSliceSmooth
 public import PhyslibAlpha.Mathematics.Distribution.Translation
 public import PhyslibAlpha.Mathematics.ExteriorAlgebra
+public import PhyslibAlpha.Mathematics.FinSum
 public import PhyslibAlpha.Mathematics.ForMathlib.Algebra.Polynomial.Commute
 public import PhyslibAlpha.Mathematics.ForMathlib.Algebra.Polynomial.SumSmulPow
 public import PhyslibAlpha.Mathematics.ForMathlib.Analysis.Normed.Algebra.LieProductFormula
@@ -309,10 +312,12 @@ public import PhyslibAlpha.Mathematics.Fourier.Inversion
 public import PhyslibAlpha.Mathematics.Fourier.LinearChange
 public import PhyslibAlpha.Mathematics.Fourier.Marginal
 public import PhyslibAlpha.Mathematics.Fourier.SchwartzDecay
+public import PhyslibAlpha.Mathematics.GeneralizedKronecker
 public import PhyslibAlpha.Mathematics.Geometry.Simplex
 public import PhyslibAlpha.Mathematics.Geometry.Sphere.Fourier
 public import PhyslibAlpha.Mathematics.Geometry.Sphere.Polar
 public import PhyslibAlpha.Mathematics.Geometry.Sphere.Profile
+public import PhyslibAlpha.Mathematics.GraphDivergence
 public import PhyslibAlpha.Mathematics.HomogeneousGenerators
 public import PhyslibAlpha.Mathematics.InvariantReduction
 public import PhyslibAlpha.Mathematics.LadderSystem.Basic
