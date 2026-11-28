@@ -53,6 +53,9 @@
   - `1578d78a` — Task 21 (Proofs #4/#3): extract `coordDeriv_g_eq` (component metric compatibility).
   - `22abe72d` — Task 21 (Proofs #4/#3): extract `coordDeriv_g_eq_nhds` and
     `coordDeriv_coordDeriv_g` from `riemann_lower_skew_first`.
+  - `29ba9e96` — Task 27 (Proofs): name the quadratic-form normalisation `quadratic_form_mul`
+    in `SobolevInitialData`.
+  - `2e93b31c` — Task 27 (Proofs): extract `coordDeriv_riemann` from `second_bianchi`.
   Each commit verified with `lake build` of the touched modules, `module_doc_lint`, `theorem_lint`,
   and `alphaPythonLinters.sh` (only the pre-existing `Bianchi.lean` `ERR_NUM_LIN` remains). A full
   `lake build PhyslibAlpha` also succeeds across all three commits; the only warning in a touched
@@ -431,9 +434,9 @@ Nothing here is a CI or linter matter — `lint-style`, `module_doc_lint` and th
   - [ ] `InitialData/ReducedCauchy.lean` — `flrw_ivp_exists_in_ball` and `flrwField_lipschitzOn`
     re-prove Picard–Lindelöf local existence by hand (~250 lines); use the Mathlib ODE result and
     keep only the FLRW vector field.
-  - [ ] `Mathematics/Analysis/SecondDifference.lean` — `secondDifference_tendsto` is Taylor's theorem
-    at order two for a finite-difference expression; retrieve it from `HasTaylorAt` rather than
-    reproving it.
+  - [x] `Mathematics/Analysis/SecondDifference.lean` — **already satisfied**: `secondDifference_tendsto`
+    is proved from Mathlib's `taylor_tendsto` (the order-two Taylor limit) via the `r = φ - taylorWithinEval`
+    remainder, not by reproving Taylor; no hand-rolled induction remains.
   - [~] `Modified/BransDicke.lean:92` — **audited, not a duplicate**: each name is defined once;
     `BransDickeTheory.gamma T := BransDicke.gamma T.ω` is a projection, and the raw form carries the
     three `ω`-lemmas. What *was* a real duplication is the mixing inside `PPNParameters`, where four
@@ -474,8 +477,9 @@ Nothing here is a CI or linter matter — `lint-style`, `module_doc_lint` and th
   - [ ] `General/BianchiContracted.lean` — `sum_ginv_covDerivRiemann_ricci_div` (246 lines),
     `sum_ginv_covDerivRiemann_scalar` (134) and `sum_ginv_riemann_ricci` (126) are far over the
     50-line guideline; split each along the contraction stage it performs.
-  - [ ] `General/Bianchi.lean` — the `second_bianchi` commutator lemma differentiates each
-    Christoffel product inline; extract a general derivative-of-product identity.
+  - [x] `General/Bianchi.lean` — done in `2e93b31c`: the inline "coordDeriv of riemann"
+    product-rule computation is now the named lemma `coordDeriv_riemann` (using `coordDeriv_mul`),
+    and `second_bianchi` just rewrites with it; the unused `hΓD`/`hdΓD` haves are gone.
   - [ ] `Cosmology/FLRW/Perturbation.lean` — long `calc` blocks of scalar algebra whose steps are
     the first-order expansion terms; name the ones that say something.
   - [x] `InitialData/MaximalDevelopment.lean` — **no change needed**: measured, every proof is
@@ -483,8 +487,10 @@ Nothing here is a CI or linter matter — `lint-style`, `module_doc_lint` and th
   - [~] `InitialData/ReducedCauchy.lean` — partly done in `72ec09c0`: `flrwBall_bounds` extracts the
     ball bounds. The numerator estimate stays inline: an attempted extraction produced a broken file
     and was reverted, so it needs a careful manual pass, not a scripted splice.
-  - [ ] `InitialData/SobolevInitialData.lean` — six `change` type-ascriptions remain; state the
-    quadratic-form normalisations as lemmas.
+  - [~] `InitialData/SobolevInitialData.lean` — six `change` type-ascriptions remain; state the
+    quadratic-form normalisations as lemmas. *(Partial `29ba9e96`: the minimiser identity
+    `C*(C*(B/C)^2 - 2B*(B/C) + x) = C*x - B^2` is now `quadratic_form_mul`; the remaining `change`s
+    are `let B/C` folding and `fin_cases` restatements.)*
 
 - [ ] **28. `handbook-references-e26eb962`** *(References `3/5`, 7 suggestions)*
   - [x] `Cosmology/FLRW/Perturbation.lean` — done in `be1e0af4`: `Mukhanov2005` (Ch. 6) and
