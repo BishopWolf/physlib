@@ -295,8 +295,8 @@ lemma nordtvedtParameter_gr : nordtvedtParameter grPPN = 0 := by
 parameter is `η_N = 1 / (2 + ω)`. -/
 lemma nordtvedtParameter_bransDicke (T : BransDicke.BransDickeTheory) (hω : 2 + T.ω ≠ 0) :
     nordtvedtParameter (bransDickePPN T) = 1 / (2 + T.ω) := by
-  simp only [nordtvedtParameter, bransDickePPN, BransDicke.BransDickeTheory.gamma]
-  rw [BransDicke.gamma_eq_one_sub T.ω hω]
+  simp only [nordtvedtParameter, bransDickePPN]
+  rw [BransDicke.BransDickeTheory.gamma_eq_one_sub T hω]
   ring
 
 /-- In unscreened metric `f(R)` gravity (`γ = 1/2, β = 1`), the Nordtvedt parameter is
@@ -311,10 +311,10 @@ lemma nordtvedtParameter_fRMetric : nordtvedtParameter fRMetricPPN = 1 / 2 := by
 lemma cassini_deviation_bransDickePPN (T : BransDicke.BransDickeTheory) (hω : 40000 < T.ω) :
     grPPN.gamma - (bransDickePPN T).gamma < 1 / 40000 ∧
       nordtvedtParameter (bransDickePPN T) < 1 / 40000 := by
-  have h1 := BransDicke.cassini_deviation T.ω hω
+  have h1 := BransDicke.BransDickeTheory.cassini_deviation T hω
   have h2 : 2 + T.ω ≠ 0 := by linarith
   have h3 := nordtvedtParameter_bransDicke T h2
-  have h4 := BransDicke.gamma_eq_one_sub T.ω h2
+  have h4 := BransDicke.BransDickeTheory.gamma_eq_one_sub T h2
   rw [h3]
   simp only [grPPN, bransDickePPN, BransDicke.BransDickeTheory.gamma] at *
   constructor <;> linarith
