@@ -46,11 +46,15 @@ theorems and the curved 3D initial-data theorems in `SobolevInitialData`:
 ## ii. Key results
 
 - `explicitSolutionObligations` : the non-vacuous obligations for the four
-  explicit spacetimes.
+  explicit spacetimes — the Einstein equation holds and the induced metric on
+  the `t = 0` slice is the prescribed ADM data.
 - `schwarzschild_explicit_development`, `sds_explicit_development`,
   `kerr_explicit_development`, `flrw_explicit_development` : the four
-  explicit-solution verifications.
-- `explicitSolutions_certificate` : the inhabited certificate.
+  explicit-solution verifications — Schwarzschild and Kerr solve the vacuum
+  equation, Schwarzschild–de Sitter solves it with the cosmological constant,
+  and flat FLRW solves the perfect-fluid equations.
+- `explicitSolutions_certificate` : the inhabited certificate, so the
+  development-layer interface is non-vacuous.
 
 ## iii. Table of contents
 

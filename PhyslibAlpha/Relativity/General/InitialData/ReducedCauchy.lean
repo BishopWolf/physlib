@@ -493,6 +493,23 @@ lemma contDiffAt_flrwField (Λ a₀ v₀ : ℝ) (ha₀ : a₀ ≠ 0) :
     hnum.div hden (mul_ne_zero two_ne_zero ha₀)
   exact h1.prodMk hdiv
 
+/-- The ball `closedBall (a₀, v₀) (|a₀| / 2)` keeps the first coordinate away from
+zero and bounds both coordinates, uniformly in the point. -/
+private lemma flrwBall_bounds (a₀ v₀ : ℝ) (ha₀ : a₀ ≠ 0) {p : ℝ × ℝ}
+    (hp : p ∈ closedBall (a₀, v₀) (|a₀| / 2)) :
+    |a₀| / 2 ≤ |p.1| ∧ |p.1| ≤ 3 * |a₀| / 2 ∧ |p.2| ≤ |v₀| + |a₀| / 2 := by
+  rw [mem_closedBall, dist_eq_norm, Prod.norm_def] at hp
+  have hp1_sub : |p.1 - a₀| ≤ |a₀| / 2 := le_trans (le_max_left _ _) hp
+  have hp2_sub : |p.2 - v₀| ≤ |a₀| / 2 := le_trans (le_max_right _ _) hp
+  refine ⟨?_, ?_, ?_⟩
+  · have := abs_sub_abs_le_abs_sub a₀ p.1
+    rw [abs_sub_comm a₀ p.1] at this
+    linarith
+  · have := abs_add_le (p.1 - a₀) a₀
+    simpa using le_trans this (by linarith)
+  · have := abs_add_le (p.2 - v₀) v₀
+    simpa using le_trans this (by linarith)
+
 /-- Elementary explicit Lipschitz constant for `flrwField Λ` on
 `closedBall (a₀, v₀) (|a₀| / 2)`. -/
 lemma flrwField_lipschitzOn (Λ a₀ v₀ : ℝ) (ha₀ : a₀ ≠ 0) :
@@ -507,34 +524,11 @@ lemma flrwField_lipschitzOn (Λ a₀ v₀ : ℝ) (ha₀ : a₀ ≠ 0) :
   refine ⟨K, ?_⟩
   rw [lipschitzOnWith_iff_dist_le_mul]
   intro p hp q hq
-  rw [mem_closedBall, dist_eq_norm, Prod.norm_def] at hp hq
-  have hp1_sub : |p.1 - a₀| ≤ |a₀| / 2 := le_trans (le_max_left _ _) hp
-  have hp2_sub : |p.2 - v₀| ≤ |a₀| / 2 := le_trans (le_max_right _ _) hp
-  have hq1_sub : |q.1 - a₀| ≤ |a₀| / 2 := le_trans (le_max_left _ _) hq
-  have hq2_sub : |q.2 - v₀| ≤ |a₀| / 2 := le_trans (le_max_right _ _) hq
+  obtain ⟨hp1_lb, hp1_ub, hp2_ub⟩ := flrwBall_bounds a₀ v₀ ha₀ hp
+  obtain ⟨hq1_lb, hq1_ub, hq2_ub⟩ := flrwBall_bounds a₀ v₀ ha₀ hq
   have ha_pos : 0 < |a₀| := abs_pos.mpr ha₀
-  have hp1_lb : |a₀| / 2 ≤ |p.1| := by
-    have := abs_sub_abs_le_abs_sub a₀ p.1
-    rw [abs_sub_comm a₀ p.1] at this
-    linarith
-  have hq1_lb : |a₀| / 2 ≤ |q.1| := by
-    have := abs_sub_abs_le_abs_sub a₀ q.1
-    rw [abs_sub_comm a₀ q.1] at this
-    linarith
   have hp1_ne : p.1 ≠ 0 := abs_pos.mp (by linarith)
   have hq1_ne : q.1 ≠ 0 := abs_pos.mp (by linarith)
-  have hp1_ub : |p.1| ≤ 3 * |a₀| / 2 := by
-    have := abs_add_le (p.1 - a₀) a₀
-    simpa using le_trans this (by linarith)
-  have hq1_ub : |q.1| ≤ 3 * |a₀| / 2 := by
-    have := abs_add_le (q.1 - a₀) a₀
-    simpa using le_trans this (by linarith)
-  have hp2_ub : |p.2| ≤ |v₀| + |a₀| / 2 := by
-    have := abs_add_le (p.2 - v₀) v₀
-    simpa using le_trans this (by linarith)
-  have hq2_ub : |q.2| ≤ |v₀| + |a₀| / 2 := by
-    have := abs_add_le (q.2 - v₀) v₀
-    simpa using le_trans this (by linarith)
   have hden_lb : |a₀| ^ 2 / 2 ≤ |2 * p.1 * q.1| := by
     rw [abs_mul, abs_mul, abs_of_pos (zero_lt_two (α := ℝ))]
     nlinarith [abs_nonneg p.1, abs_nonneg q.1]

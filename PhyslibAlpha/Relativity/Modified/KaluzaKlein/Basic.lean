@@ -334,7 +334,8 @@ noncomputable def KaluzaKleinData.metricInv (D : KaluzaKleinData) : Tensor2 5 :=
 lemma KaluzaKleinData.metricInv_symm (D : KaluzaKleinData) : IsSymm D.metricInv :=
   kkMetricInv_symm D.M D.A D.φ
 
-/-- Shift the electromagnetic four-potential of a `KaluzaKleinData` by a gradient `dlam`. -/
+/-- Gauge-shift the electromagnetic four-potential of a `KaluzaKleinData` by a gradient
+`μ ↦ ∂_μ ξ`, leaving the metric and dilaton unchanged. -/
 def KaluzaKleinData.gaugeShift (D : KaluzaKleinData) (dlam : Fin 4 → ℝ) : KaluzaKleinData where
   M := D.M
   A μ := D.A μ + dlam μ

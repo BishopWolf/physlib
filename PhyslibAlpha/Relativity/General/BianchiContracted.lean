@@ -40,6 +40,9 @@ of the Ricci scalar.
 
 * S. M. Carroll, *Lecture Notes on General Relativity*, arXiv:gr-qc/9712019,
   §3.2, pp. 72–73. [ref: Carroll1997]
+* R. M. Wald, *General Relativity* (1984), Ch. 3. [ref: wald_1984_general_relativity]
+* C. W. Misner, K. S. Thorne, and J. A. Wheeler, *Gravitation* (1973), Ch. 13.
+  [ref: mtw_1973_gravitation]
 
 -/
 

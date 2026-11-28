@@ -63,6 +63,9 @@ of arbitrary smooth 3-manifold data remains outside this abstract/1D domain laye
 
 ## iv. References
 
+* Y. Choquet-Bruhat, R. Geroch, *Global aspects of the Cauchy problem in
+  general relativity*, Comm. Math. Phys. 14, pp. 329–335 (1969).
+  [ref: ChoquetBruhatGeroch1969]
 * J. Sbierski, *On the existence of a maximal Cauchy development for the
   Einstein equations — a dezornification*, arXiv:1309.7591, §2, p. 2.
   [ref: sbierski_2013, p. 2]

@@ -76,15 +76,19 @@ universe u v
 solutions and the predicates are the interface; this structure does not
 construct a solution or a reduced equation. -/
 structure ReducedCauchyProblem (X : ChartSpacetime) where
-  /-- The chart initial data. -/
+  /-- The chart initial data: the spatial metric, extrinsic curvature and matter
+  fields prescribed on the initial slice. -/
   data : ChartInitialData X
-  /-- The type of reduced solutions. -/
+  /-- The type of reduced solutions: the objects claimed to be solutions of the
+  reduced system. -/
   Solution : Type
-  /-- The reduced equation. -/
+  /-- The reduced equation holds: the object satisfies the second-order system
+  obtained from the Einstein equations in the chosen reduction. -/
   IsSolution : Solution → Prop
-  /-- The prescribed Cauchy data. -/
+  /-- The object takes the prescribed Cauchy data on the initial slice. -/
   HasCauchyData : Solution → Prop
-  /-- The harmonic/wave gauge condition. -/
+  /-- The object satisfies the harmonic (wave) gauge condition, which is the
+  gauge choice that makes the reduced system hyperbolic. -/
   IsWaveGauge : Solution → Prop
 
 /-- The missing local-existence and uniqueness input for a reduced problem.

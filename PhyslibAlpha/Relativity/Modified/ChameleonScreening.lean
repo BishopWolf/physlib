@@ -83,6 +83,7 @@ exponentially damping fifth forces via `yukawaSuppression`.
 
 /-- Chameleon scalar screening model parameterized by its linear ambient-density mass coupling
 `c ≥ 0` in `m² = c ρ`. -/
+
 structure ChameleonModel where
   /-- Ambient density-to-mass-squared coupling constant `c`. -/
   c : ℝ
@@ -90,30 +91,37 @@ structure ChameleonModel where
   nonneg : 0 ≤ c
 
 /-- Environment-dependent mass squared `m² = ρ M.c` of a `ChameleonModel`. -/
+
 def ChameleonModel.massSq (M : ChameleonModel) (ρ : ℝ) : ℝ := ρ * M.c
 
 /-- Environment-dependent chameleon mass `m = √(ρ M.c)` of a `ChameleonModel`. -/
+
 noncomputable def ChameleonModel.mass (M : ChameleonModel) (ρ : ℝ) : ℝ :=
   Real.sqrt (M.massSq ρ)
 
 /-- A denser environment produces a heavier chameleon scalar. -/
+
 lemma ChameleonModel.mass_mono (M : ChameleonModel) {ρ₁ ρ₂ : ℝ} (h : ρ₁ ≤ ρ₂) :
     M.mass ρ₁ ≤ M.mass ρ₂ :=
   Real.sqrt_le_sqrt (mul_le_mul_of_nonneg_right h M.nonneg)
 
 /-- Compton wavelength `λ = 1 / m` of a scalar of mass `m`. -/
+
 noncomputable def comptonRange (m : ℝ) : ℝ := 1 / m
 
 /-- Compton wavelength `λ = 1 / M.mass ρ` of a `ChameleonModel` in ambient density `ρ`. -/
+
 noncomputable def ChameleonModel.range (M : ChameleonModel) (ρ : ℝ) : ℝ :=
   ChameleonScreening.comptonRange (M.mass ρ)
 
 /-- A heavier scalar has a shorter Compton range. -/
+
 lemma comptonRange_antitone {m₁ m₂ : ℝ} (h₁ : 0 < m₁) (h : m₁ ≤ m₂) :
     comptonRange m₂ ≤ comptonRange m₁ :=
   one_div_le_one_div_of_le h₁ h
 
 /-- In a denser environment, the chameleon Compton range shrinks. -/
+
 lemma ChameleonModel.range_shrinks (M : ChameleonModel) {ρ₁ ρ₂ : ℝ} (hpos : 0 < M.mass ρ₁)
     (h : ρ₁ ≤ ρ₂) :
     ChameleonScreening.comptonRange (M.mass ρ₂) ≤
@@ -121,13 +129,16 @@ lemma ChameleonModel.range_shrinks (M : ChameleonModel) {ρ₁ ρ₂ : ℝ} (hpo
   ChameleonScreening.comptonRange_antitone hpos (M.mass_mono h)
 
 /-- Yukawa suppression factor `e^{-x}` at dimensionless distance `x = r / λ`. -/
+
 noncomputable def yukawaSuppression (x : ℝ) : ℝ := Real.exp (-x)
 
 /-- Yukawa suppression `e^{-r / λ}` at radius `r` for a `ChameleonModel` in ambient density `ρ`. -/
+
 noncomputable def ChameleonModel.suppression (M : ChameleonModel) (ρ r : ℝ) : ℝ :=
   ChameleonScreening.yukawaSuppression (r / M.range ρ)
 
 /-- Beyond one Compton range (`r ≥ λ`), the Yukawa factor drops below `1/2`. -/
+
 lemma yukawaSuppression_lt_half {x : ℝ} (h : 1 ≤ x) : yukawaSuppression x < 1 / 2 := by
   have h1 : yukawaSuppression x ≤ Real.exp (-1) := by
     simp only [yukawaSuppression]
@@ -148,29 +159,36 @@ gradient, the exterior scalar profile produces a suppressed fifth-force ratio.
 -/
 
 /-- Thin-shell parameter `Δ = |δφ| / (2 β M_pl |Φ_N|)`. -/
+
 noncomputable def thinShellParameter (dphi β Mpl Phi : ℝ) : ℝ :=
   |dphi| / (2 * β * Mpl * |Phi|)
 
 /-- Surviving fraction `min Δ 1` of the unscreened fifth force. -/
+
 noncomputable def screeningFactor (Δ : ℝ) : ℝ := min Δ 1
 
 /-- Non-negativity of the thin-shell parameter for positive coupling and potential scale. -/
+
 lemma thinShellParameter_nonneg {dphi β Mpl Phi : ℝ} (h : 0 ≤ 2 * β * Mpl * |Phi|) :
     0 ≤ thinShellParameter dphi β Mpl Phi :=
   div_nonneg (abs_nonneg dphi) h
 
 /-- Thin-shell suppression: `Δ ≤ ε` implies `screeningFactor Δ ≤ ε`. -/
+
 lemma thin_shell_suppressed {Δ ε : ℝ} (h : Δ ≤ ε) : screeningFactor Δ ≤ ε :=
   (min_le_left Δ 1).trans h
 
 /-- The external fifth-force screening factor saturates at `1` if and only if `1 ≤ Δ`. -/
+
 lemma screeningFactor_eq_one_iff (Δ : ℝ) : screeningFactor Δ = 1 ↔ 1 ≤ Δ :=
   min_eq_right_iff
 
 /-- Exterior scalar profile `φ(r) = φ∞ - Q / r` outside a spherical body. -/
+
 noncomputable def exteriorScalarProfile (φinf Q r : ℝ) : ℝ := φinf - Q / r
 
 /-- The radial gradient of the exterior profile is `Q / r²`. -/
+
 lemma hasDerivAt_exteriorScalarProfile (φinf Q r : ℝ) (hr : r ≠ 0) :
     HasDerivAt (exteriorScalarProfile φinf Q) (Q / r ^ 2) r := by
   have hinv : HasDerivAt (fun s : ℝ => s⁻¹) (-1 / r ^ 2) r :=
@@ -190,9 +208,11 @@ lemma hasDerivAt_exteriorScalarProfile (φinf Q r : ℝ) (hr : r ≠ 0) :
   exact hsub
 
 /-- Fifth-force ratio `(Q / r²) / (Φ R / r²)` relative to Newtonian surface gravity. -/
+
 noncomputable def fifthForceRatio (Q Phi R r : ℝ) : ℝ := (Q / r ^ 2) / (Phi * R / r ^ 2)
 
 /-- Away from `r = 0`, the fifth-force ratio simplifies to `Q / (Φ R)`. -/
+
 lemma fifthForceRatio_eq (Q Phi R r : ℝ) (hr : r ≠ 0) :
     fifthForceRatio Q Phi R r = Q / (Phi * R) := by
   simp only [fifthForceRatio]
@@ -200,6 +220,7 @@ lemma fifthForceRatio_eq (Q Phi R r : ℝ) (hr : r ≠ 0) :
   field_simp
 
 /-- With thin-shell scalar charge `Q = Δ Φ R`, the exterior fifth force is `Δ` times gravity. -/
+
 lemma fifthForceRatio_thin_shell (Δ Phi R r : ℝ) (h : Phi * R ≠ 0) (hr : r ≠ 0) :
     fifthForceRatio (Δ * Phi * R) Phi R r = Δ := by
   have hPhi : Phi ≠ 0 := (mul_ne_zero_iff.mp h).1
@@ -208,18 +229,21 @@ lemma fifthForceRatio_thin_shell (Δ Phi R r : ℝ) (h : Phi * R ≠ 0) (hr : r 
   field_simp
 
 /-- The exterior profile evaluated at the stellar surface `r = R` gives `φ(R) = φ∞ - Δ Φ`. -/
+
 lemma exteriorScalarProfile_surface (φinf Δ Phi R : ℝ) (hR : R ≠ 0) :
     exteriorScalarProfile φinf (Δ * Phi * R) R = φinf - Δ * Phi := by
   simp only [exteriorScalarProfile]
   field_simp
 
 /-- Thin shell implies weak fifth force: `Δ ≤ ε` caps the fifth-force ratio at `ε`. -/
+
 lemma thin_shell_weak (Δ ε Phi R r : ℝ) (hPR : Phi * R ≠ 0) (hr : r ≠ 0)
     (h : Δ ≤ ε) : fifthForceRatio (Δ * Phi * R) Phi R r ≤ ε := by
   rw [fifthForceRatio_thin_shell Δ Phi R r hPR hr]
   exact h
 
 /-- Thick shell implies an order-one unscreened fifth force (`1 ≤ fifthForceRatio`). -/
+
 lemma thick_shell_strong (Δ Phi R r : ℝ) (hPR : Phi * R ≠ 0) (hr : r ≠ 0)
     (h : 1 ≤ Δ) : 1 ≤ fifthForceRatio (Δ * Phi * R) Phi R r := by
   rw [fifthForceRatio_thin_shell Δ Phi R r hPR hr]
