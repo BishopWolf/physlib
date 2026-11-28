@@ -421,17 +421,29 @@ and the new Brill–Lindquist and Gourgoulhon entries); `Proofs` and `Scope` hel
 Nothing here is a CI or linter matter — `lint-style`, `module_doc_lint` and the rest are clean.
 
 - [ ] **24. `handbook-basic-e26eb962`** *(Basic `3/5`, 6 suggestions)*
+  - **Duplicate audit (`2026-11-28`, whole of `PhyslibAlpha`):** a declaration scanner over every
+    `PhyslibAlpha` file found no two declarations with the same fully-qualified name carrying the
+    same statement. The single cross-file name collision, `retardedDistribution_unique`, is two
+    *different* theorems in two namespaces (`KleinGordon.Spacetime` for the difference of two
+    solutions, `KleinGordon.Solution.DistributionSources` for one solution against the retarded
+    one), both used; an attempted rename was reverted as unnecessary churn. Everything the list calls
+    a "raw-vs-structure duplicate" is a definition plus projections.
   - [ ] `InitialData/ReducedCauchy.lean` — `flrw_ivp_exists_in_ball` and `flrwField_lipschitzOn`
     re-prove Picard–Lindelöf local existence by hand (~250 lines); use the Mathlib ODE result and
     keep only the FLRW vector field.
   - [ ] `Mathematics/Analysis/SecondDifference.lean` — `secondDifference_tendsto` is Taylor's theorem
     at order two for a finite-difference expression; retrieve it from `HasTaylorAt` rather than
     reproving it.
-  - [ ] `Modified/BransDicke.lean:92` — two parallel APIs for `γ`: `BransDicke.gamma` on a bare `ω`
-    and `BransDickeTheory.gamma` on the structure; fold the raw form into the structure.
-  - [ ] `Modified/KaluzaKlein/Basic.lean` — `kkMetric`/`kkMetricInv` duplicate the structure's metric
-    and inverse at the raw field level.
-  - [ ] `Modified/EinsteinCartan/Basic.lean` — `torsion` defined both raw and as a projection.
+  - [~] `Modified/BransDicke.lean:92` — **audited, not a duplicate**: each name is defined once;
+    `BransDickeTheory.gamma T := BransDicke.gamma T.ω` is a projection, and the raw form carries the
+    three `ω`-lemmas. What *was* a real duplication is the mixing inside `PPNParameters`, where four
+    call sites used the two APIs interchangeably; three now use the structure form (`c56a25fd`). No
+    API was removed.
+  - [x] `Modified/KaluzaKlein/Basic.lean` — **no duplicate** (audited): `kkMetric`/`kkMetricInv` hold
+    the component lemmas and `D.metric`/`D.metricInv` are projections over them, the same shape as
+    `CoordinateMetric`; the formula is written once (`KaluzaKleinData.metric := kkMetric D.M.g …​`).
+  - [x] `Modified/EinsteinCartan/Basic.lean` — **no duplicate** (audited): `torsion` exists once, as
+    the structure field; everything else is `T.torsion`. No change needed.
   - [ ] `Modified/KaluzaKlein/KaluzaMiracle.lean:80` — `ricci44`/`ricci5DHorizontal` restate
     curvature components that follow from the 5D metric in `KaluzaKlein/Basic.lean`.
 
