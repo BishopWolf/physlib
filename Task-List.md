@@ -292,8 +292,14 @@ the new ports brought long proofs, uncited modules and invented names.
     `General/InitialData/*`, `General/Linearized/LinearizedWaveGauge.lean`, `General/ManifoldInterface.lean`,
     `General/Schwarzschild/{EddingtonFinkelstein,KruskalSzekeres,SchwarzschildManifold}.lean`); no
     file elsewhere in the repository names them.
-  - [ ] Whole change *(Basic 4)* — split into coherent PRs (charts → Bianchi → wave stack →
-    initial data → modified gravity).
+  - [ ] Whole change *(Basic 4)* — split into coherent PRs; the measured plan is in Task 30. The
+    split must be by **file set**, not by replaying commits: the 141 commits interleave, and later
+    refactors touch files from every earlier group. Two directions were checked on throwaway
+    worktrees: initial data **cannot** come first (it imports `Bianchi`, `ManifoldInterface` and the
+    black-hole modules), and core foundations cannot sit at the base either while
+    `SchwarzschildManifold` imports `ChartInitialData`/`SobolevInitialData`. The graph has no
+    cycles, so `core+crypto-foundations → initial data` (with the four `ChartInitialData` imports
+    moved down) is the only order.
 - [ ] **19. `handbook-documentation-2026-11-28`** *(Documentation 3/5)*
   - [x] `InitialData/InitialDataInterface.lean:21,120` and `SobolevInitialData.lean:31`
     *(Doc 2)* — done in `235fdd79`: the "M2 layer" shorthand is gone from both overviews.
@@ -473,11 +479,17 @@ Nothing here is a CI or linter matter — `lint-style`, `module_doc_lint` and th
     quadratic-form normalisations as lemmas.
 
 - [ ] **28. `handbook-references-e26eb962`** *(References `3/5`, 7 suggestions)*
-  - [ ] `Cosmology/FLRW/Perturbation.lean` — Mukhanov and Dodelson are plain text with no
-    `[ref: ...]` key; add bib entries and cite by key.
-  - [ ] `InitialData/ManifoldSobolev.lean` — Evans and Adams un-keyed.
-  - [ ] `Metrics/ConformalDecomposition.lean` — York and Lichnerowicz un-keyed.
-  - [ ] `InitialData/CauchyInterfaces.lean` — development-layer forward references un-keyed.
+  - [x] `Cosmology/FLRW/Perturbation.lean` — done in `be1e0af4`: `Mukhanov2005` (Ch. 6) and
+    `Weinberg2008` (Ch. 5) bib entries added and cited by key with section numbers.  (The earlier
+    note about a Dodelson entry was wrong: the list never named Dodelson.)
+  - [x] `InitialData/ManifoldSobolev.lean` — done in `be1e0af4`: `AdamsFournier2003` and the
+    page-anchored `BartnikIsenberg2004` added and cited by key.
+  - [x] `Metrics/ConformalDecomposition.lean` — done in `be1e0af4`: `Lichnerowicz1944`, `York1971`
+    and `BartnikIsenberg2004` added and cited by key; the unverifiable Choquet-Bruhat–York 1980
+    entry is dropped (the module does not use it).
+  - [x] `InitialData/CauchyInterfaces.lean` — **no change needed**: checked, its references were
+    already keyed (`CauchyInterfaces.lean` cites `sbierski_2013` etc.); the earlier report entry
+    was wrong on this file.
   - [ ] `InitialData/MaximalDevelopment.lean` — cite Choquet-Bruhat–Geroch (1969) with a page, not
     only a survey.
   - [ ] `General/BianchiContracted.lean` — the contracted identity is cited to Carroll only; add
@@ -487,17 +499,52 @@ Nothing here is a CI or linter matter — `lint-style`, `module_doc_lint` and th
 
 - [ ] **29. `handbook-scope-e26eb962`** *(Scope `4/5`, 5 suggestions)*
   - [ ] Whole change — the branch carries three separable contributions (gravity library, ported
-    wave/initial-data stack, modified-gravity field theories); split into three PRs.
-  - [ ] `InitialData/MaximalDevelopment.lean` — the title claims the Choquet-Bruhat–Geroch maximal
-    development, but what is proved is maximality for an abstract `OrderedDevelopmentSystem` and an
-    interval model; retitle and say no Einstein development is constructed.
-  - [ ] `InitialData/CauchyInterfaces.lean` — say which certificates are inhabited anywhere in the
-    library, and by which lemma.
+    wave/initial-data stack, modified-gravity field theories); the measured split plan is Task 30.
+  - [x] `InitialData/MaximalDevelopment.lean` — done in `be1e0af4`: retitled "The Zorn form of
+    maximal development, at the interface level", Section A and its TOC entry lose the
+    Choquet–Bruhat–Geroch attribution, and the scope boundary now opens by saying the
+    Choquet–Bruhat–Geroch theorem itself is not proved and no Einstein development is constructed.
+  - [x] `InitialData/CauchyInterfaces.lean` — done in `be1e0af4`: each key-results entry now names
+    the inhabiting lemma — `linearizedBox_reducedLocalExistence` / `flrw_reducedLocalExistence`,
+    `linearizedBox_gaugeRecovery` / `flrw_gaugeRecovery`,
+    `OrderedDevelopmentSystem.maximalDevelopmentCertificate` /
+    `intervalMaximalDevelopmentCertificate`, `explicitSolutions_certificate` — and the reduced
+    entry says no other problem in the library is covered.
   - [ ] `Modified/AqualVariation.lean` — the discrete finite-graph derivation and the continuum
     Poisson-limit action are two ideas in one module; split.
-  - [ ] `Cosmology/FLRW/Perturbation.lean` — the module proves the scalar first-order equations for
-    a restricted ansatz; scope the title/overview and say tensor/vector modes are out of scope.
+  - [x] `Cosmology/FLRW/Perturbation.lean` — done in `be1e0af4`: the overview states that the module
+    formalises the scalar sector only and that vector and tensor perturbations are out of scope, and
+    the "starts the linear-perturbation layer (T9.4)" programme wording is gone.
 
 Note: Tasks 24–29 overlap Tasks 14, 15, 16, 18 and 23 (the same open items, re-scored and in some
 cases located more precisely, e.g. the three contraction lemmas in `BianchiContracted.lean` and the
 six un-keyed reference lists). Work on either set closes both.
+
+- [ ] **30. `pr-splitting-plan`** *(Basic 4 / Scope 1 — measured, needs a human decision)*
+
+  The branch is 141 commits over 114 files. The commits interleave (later refactors touch files from
+  every earlier group), so the split must be done by **file set**, not by replaying history. The
+  dependency graph is a DAG — no cycles — but not in the order the earlier notes assumed:
+
+  - **Initial data cannot come first.** `InitialData/CauchyInterfaces.lean` imports
+    `General.Bianchi`; `SobolevInitialData`, `CauchyInterfaces`, `ExplicitDevelopments` and the
+    `ReducedWave3D`/`WaveEnergy*` modules import `Metrics.CoordinateMetric`, and the group also
+    needs `General.ManifoldInterface` and the black-hole modules.
+  - **Core foundations cannot sit at the base either.** `Schwarzschild/SchwarzschildManifold.lean`
+    imports `InitialData/ChartInitialData.lean` and `InitialData/SobolevInitialData.lean`.
+  - The one-way resolution is to move those four `ChartInitialData` imports **down** (they are
+    chart-level ADM data and belong with the chart layer), after which:
+
+  1. **PR A — charts and core gravity.** Everything outside `InitialData/` and `Mathematics/`, with
+     `ChartInitialData` (and `CovariantDerivTensor2`) moved into `Metrics/` or `General/`. Builds on
+     `7910f51f`; no initial-data import remains.
+  2. **PR B — the wave and initial-data stack.** `InitialData/*` and the `Mathematics/` helpers
+     (`GraphDivergence`, `Analysis/SecondDifference`, `FinSum`), on top of A.
+  3. **PR C — modified-gravity field theories.** `Modified/{MOG,TeVeS,DiracCounting,MondFieldTheory,
+     AqualVariation,MassiveGravity/*}` on top of A; independent of B, so B and C can go in parallel.
+
+  Checked on throwaway worktrees (`/tmp/split-core`, `/tmp/split-id`, both removed): the two
+  directions fail for the reasons above, so this order is forced. **Not started** — rewriting the
+  branch into three PRs changes what reviewers see and what CI runs, so it needs the human author's
+  decision on whether to do it now, at review time, or not at all (Task 13 is the same decision,
+  deferred earlier).
