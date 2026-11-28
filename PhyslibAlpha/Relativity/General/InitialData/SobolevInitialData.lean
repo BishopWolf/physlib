@@ -130,6 +130,13 @@ lemma deriv_l2_le_sobolevH1_1D (u u' : ℝ → ℝ) {a b : ℝ} (hab : a ≤ b) 
     fun _ _ => sq_nonneg _
   linarith
 
+/-- Normalisation of the quadratic form `C t² - 2 B t + x` at its minimiser `t = B / C`:
+multiplying by `C ≠ 0` clears the denominator and yields `C x - B²`. -/
+private lemma quadratic_form_mul {B C x : ℝ} (hC : C ≠ 0) :
+    C * (C * (B / C) ^ 2 - 2 * B * (B / C) + x) = C * x - B ^ 2 := by
+  field_simp [hC]
+  ring
+
 /-- Cauchy–Schwarz inequality on `[0, x]`: `(∫₀ˣ f)² ≤ x ∫₀ˣ f²`. -/
 lemma sq_intervalIntegral_le (f : ℝ → ℝ) (hf : Continuous f) {x : ℝ} (hx : 0 ≤ x) :
     (∫ s in (0 : ℝ)..x, f s) ^ 2 ≤ x * ∫ s in (0 : ℝ)..x, f s ^ 2 := by
@@ -174,9 +181,8 @@ lemma sq_intervalIntegral_le (f : ℝ → ℝ) (hf : Continuous f) {x : ℝ} (hx
     have hmin := hquad (B / C)
     have hmul : 0 ≤ C * (C * (B / C) ^ 2 - 2 * B * (B / C) + x) :=
       mul_nonneg hC hmin
-    have halg : C * (C * (B / C) ^ 2 - 2 * B * (B / C) + x) = C * x - B ^ 2 := by
-      field_simp [hC0]
-      ring
+    have halg : C * (C * (B / C) ^ 2 - 2 * B * (B / C) + x) = C * x - B ^ 2 :=
+      quadratic_form_mul hC0
     rw [halg] at hmul
     change B ^ 2 ≤ x * C
     linarith
