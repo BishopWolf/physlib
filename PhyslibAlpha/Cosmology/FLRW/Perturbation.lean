@@ -14,8 +14,12 @@ import Mathlib.Tactic.Linarith
 
 ## i. Overview
 
-This module starts the linear-perturbation layer of the alternatives programme
-(T9.4).  It fixes the scalar sector of a metric perturbation on a comoving FLRW
+The linear perturbations of an FLRW background split, by their behaviour under
+the spatial rotation group, into scalar, vector and tensor sectors.  This module
+formalises the **scalar sector only**; vector and tensor perturbations, and the
+mode equations that couple them, are out of scope.
+
+It fixes the scalar sector of a metric perturbation on a comoving FLRW
 background `S`, in the "supplied gradient" idiom used elsewhere in the
 development: the two scalar potentials `phi`, `psi` and the supplied first and
 second spatial-gradient data `B`, `E` are given as fields, so no spatial
@@ -65,8 +69,10 @@ transformation.
 
 ## iv. References
 
-* V. F. Mukhanov, *Physical Foundations of Cosmology*, Cambridge, 2005, Ch. 6.
-* S. Weinberg, *Cosmology*, Oxford, 2008, Ch. 5.
+* V. F. Mukhanov, *Physical Foundations of Cosmology*, Cambridge, 2005, Ch. 6
+  (scalar perturbations and the Bardeen potentials). [ref: Mukhanov2005, Ch. 6]
+* S. Weinberg, *Cosmology*, Oxford, 2008, Ch. 5 (gauge transformations).
+  [ref: Weinberg2008, Ch. 5]
 -/
 
 @[expose] public section

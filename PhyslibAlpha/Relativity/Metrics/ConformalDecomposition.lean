@@ -58,15 +58,14 @@ constraint equations.
 
 ## iv. References
 
-* A. Lichnerowicz, *L'integration des equations de la gravitation relativiste
-  et le probleme des n corps*, J. Math. Pures Appl. 23 (1944) 37-63.
+* A. Lichnerowicz, *L'intégration des équations de la gravitation relativiste
+  et le problème des n corps*, J. Math. Pures Appl. 23 (1944) 37-63.
+  [ref: Lichnerowicz1944]
 * J. W. York, *Gravitational energy and the initial-value problem*,
-  Phys. Rev. Lett. 26 (1971) 1656.
-* Y. Choquet-Bruhat and J. W. York, *The Cauchy problem*, in *General
-  Relativity and Gravitation* (Plenum, 1980).
+  Phys. Rev. Lett. 26 (1971) 1656. [ref: York1971]
 * R. Bartnik and J. Isenberg, *The constraint equations*, in *The Einstein
-  Equations and the Large Scale Behavior of Gravitational Fields* (2004),
-  arXiv:gr-qc/0405092.
+  Equations and the Large Scale Behavior of Gravitational Fields* (2004)
+  (https://arxiv.org/pdf/gr-qc/0405092#page=1). [ref: BartnikIsenberg2004]
 -/
 
 @[expose] public section

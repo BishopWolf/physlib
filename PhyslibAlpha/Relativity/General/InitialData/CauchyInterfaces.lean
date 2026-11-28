@@ -29,14 +29,26 @@ or causality theory.
 ## ii. Key results
 
 - `ReducedCauchyProblem`, `ReducedLocalExistenceCertificate` : the reduced
-  Cauchy interface and its missing local existence/uniqueness input.
+  Cauchy interface and its local existence/uniqueness input.  The certificate is
+  inhabited for the linearized 3D wave-gauge box problem
+  (`ReducedCauchy.linearizedBox_reducedLocalExistence`) and for the flat FLRW
+  reduced Einstein ODE (`ReducedCauchy.flrw_reducedLocalExistence`), and for no
+  other problem in the library.
 - `GaugeRecoveryProblem`, `GaugeRecoveryCertificate` : the gauge and
-  constraint-propagation interface.
+  constraint-propagation interface.  Inhabited for the linearized 3D box
+  (`GaugeRecovery.linearizedBox_gaugeRecovery`) and for FLRW
+  (`GaugeRecovery.flrw_gaugeRecovery`).
 - `DevelopmentInterface`, `MaximalDevelopmentCertificate` : the maximal
   development and uniqueness-up-to-isometry interface, universe-polymorphic in
-  its data and spacetime types.
+  its data and spacetime types.  Inhabited for every `OrderedDevelopmentSystem`
+  (`MaximalDevelopment.OrderedDevelopmentSystem.maximalDevelopmentCertificate`),
+  in particular for the open-subset model of `ℝ`
+  (`MaximalDevelopment.intervalMaximalDevelopmentCertificate`); no Einstein
+  development system is constructed.
 - `ExplicitDevelopmentObligations`, `ExplicitDevelopmentCertificate` : the
-  explicit-solution recovery interface.
+  explicit-solution recovery interface.  Inhabited for the Schwarzschild,
+  Schwarzschild–de Sitter, Kerr and flat FLRW solutions
+  (`ExplicitDevelopments.explicitSolutions_certificate`).
 
 ## iii. Table of contents
 

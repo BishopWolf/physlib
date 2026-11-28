@@ -31,8 +31,9 @@ It is layer L1 of the paper on the constraint equations.
 ## iv. References
 
 * R. A. Adams, J. J. F. Fournier, *Sobolev Spaces*, 2nd ed., 2003.
-* R. Bartnik, J. Isenberg, *The constraint equations*, 2004,
-  arXiv:gr-qc/0405092.
+  [ref: AdamsFournier2003]
+* R. Bartnik, J. Isenberg, *The constraint equations*, 2004
+  (https://arxiv.org/pdf/gr-qc/0405092#page=1). [ref: BartnikIsenberg2004]
 -/
 
 @[expose] public section

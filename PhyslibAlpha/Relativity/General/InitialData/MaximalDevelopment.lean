@@ -11,15 +11,15 @@ public import Mathlib.Order.Zorn
 
 /-!
 
-# Maximal development via the Choquet–Bruhat–Geroch Zorn argument
+# The Zorn form of maximal development, at the interface level
 
 ## i. Overview
 
-This module formalises the Choquet–Bruhat–Geroch (1969) maximal-development
-construction at the extension/amalgamation interface level and inhabits
-`MaximalDevelopmentCertificate` in two settings:
+This module formalises the extension/amalgamation argument that underlies the
+Choquet–Bruhat–Geroch (1969) maximal-development theorem, at the interface level,
+and inhabits `MaximalDevelopmentCertificate` in two settings:
 
-1. **Abstract Choquet–Bruhat–Geroch Zorn theorem (`OrderedDevelopmentSystem`)**:
+1. **Abstract Zorn theorem (`OrderedDevelopmentSystem`)**:
    given a development relation `IsDevelopment` determining unique Cauchy data,
    a transitive extension preorder `Extends` in which every nonempty chain has
    an upper bound and any two developments of the same data admit a common
@@ -33,26 +33,31 @@ construction at the extension/amalgamation interface level and inhabits
    by `⊆` (`⋃₀ c` for chain upper bounds, `U ∪ V` for amalgamation), inhabiting
    `MaximalDevelopmentCertificate`.
 
-Scope boundary: proving the geometric extension, isometric-amalgamation, and
-Zorn/Sbierski patching axioms for general globally hyperbolic 4D Lorentzian
-Einstein developments of arbitrary smooth 3-manifold data remains outside this
-abstract/1D domain layer.
+Scope boundary: the Choquet–Bruhat–Geroch theorem itself is not proved here, and no
+Einstein development is constructed.  The module proves a maximality theorem for
+any `OrderedDevelopmentSystem` — an abstract preorder with unique-data, chain-bound
+and amalgamation hypotheses — and exhibits one such system on open subsets of `ℝ`.
+Discharging the geometric extension, isometric-amalgamation and Zorn/Sbierski
+patching axioms for general globally hyperbolic 4D Lorentzian Einstein developments
+of arbitrary smooth 3-manifold data remains outside this abstract/1D domain layer.
 
 ## ii. Key results
 
 - `OrderedDevelopmentSystem`, `OrderedDevelopmentSystem.exists_maximal`,
-  `unique_up_to_isometry` : the abstract Choquet–Bruhat–Geroch Zorn argument.
+  `unique_up_to_isometry` : the abstract Zorn argument — any development system
+  with the stated hypotheses has a maximal element, unique up to its isometry.
 - `OrderedDevelopmentSystem.maximalDevelopmentCertificate` : the abstract
   certificate.
 - `chartDevelopmentInterface`, `ChartMaximalDevelopmentCertificate` : the
   chart-level development interface, with `ChartSpacetime.IsIsometric` as its uniqueness
   relation.
 - `intervalDevelopmentSystem`, `intervalMaximalDevelopmentCertificate` : the
-  concrete zero-hypothesis open-domain instance.
+  concrete instance on open subsets of `ℝ` ordered by inclusion, so the abstract
+  hypotheses are shown to be satisfiable.
 
 ## iii. Table of contents
 
-- A. Abstract Choquet–Bruhat–Geroch Zorn maximal development theorem
+- A. Abstract Zorn maximal development theorem
 - B. Chart-level isometry interface
 - C. Concrete zero-hypothesis open-domain maximal development
 
@@ -71,7 +76,7 @@ namespace GeneralRelativity
 
 universe u v
 
-/-! ## A. Abstract Choquet–Bruhat–Geroch Zorn maximal development theorem -/
+/-! ## A. Abstract Zorn maximal development theorem -/
 
 /-- Abstract Choquet–Bruhat–Geroch development system: a relation `IsDevelopment`
 (determining unique Cauchy data on the slice) equipped with a transitive
