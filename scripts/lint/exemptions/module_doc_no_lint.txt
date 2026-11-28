@@ -27,7 +27,6 @@ Physlib/CondensedMatter/LatticeModels/Basic.lean
 Physlib/CondensedMatter/ManyBody/Basic.lean
 Physlib/CondensedMatter/Response/Basic.lean
 Physlib/CondensedMatter/Topology/Basic.lean
-Physlib/Cosmology/Basic.lean
 Physlib/Cosmology/FLRW/Basic.lean
 Physlib/Cosmology/FLRW/ConformalTime.lean
 Physlib/Cosmology/FLRW/DensityParameters.lean
@@ -248,18 +247,15 @@ Physlib/QuantumMechanics/HilbertSpaces/SpaceD/PositionStates.lean
 Physlib/QuantumMechanics/HilbertSpaces/SpaceD/SchwartzSubmodule.lean
 Physlib/QuantumMechanics/Hydrogen/Basic.lean
 Physlib/QuantumMechanics/Hydrogen/LaplaceRungeLenzVector.lean
-Physlib/QuantumMechanics/Operators/AngularMomentum.lean
 Physlib/QuantumMechanics/Operators/Examples.lean
 Physlib/QuantumMechanics/Operators/OneDimension/Commutation.lean
 Physlib/QuantumMechanics/Operators/OneDimension/Momentum.lean
 Physlib/QuantumMechanics/Operators/OneDimension/Parity.lean
 Physlib/QuantumMechanics/Operators/OneDimension/Position.lean
 Physlib/QuantumMechanics/Operators/OneDimension/Unbounded.lean
-Physlib/QuantumMechanics/Operators/Position.lean
 Physlib/QuantumMechanics/Operators/StateObservables/ExpectedValue.lean
 Physlib/QuantumMechanics/Operators/StateObservables/IsEigenvector.lean
 Physlib/QuantumMechanics/Operators/StateObservables/Variance.lean
-Physlib/QuantumMechanics/Operators/Unbounded.lean
 Physlib/QuantumMechanics/PlanckConstant.lean
 Physlib/Relativity/Bispinors/Basic.lean
 Physlib/Relativity/Bispinors/Pauli/Basic.lean
