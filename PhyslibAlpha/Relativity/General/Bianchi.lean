@@ -818,6 +818,62 @@ lemma second_bianchi_of {n : ℕ}
     linarith
   linarith
 
+/-- The coordinate derivative of the Riemann tensor, in component form: differentiating
+`R^ρ_{σμν} = ∂_μ Γ^ρ_{νσ} - ∂_ν Γ^ρ_{μσ} + ∑_c (Γ^ρ_{μc} Γ^c_{νσ} - Γ^ρ_{νc} Γ^c_{μσ})`
+with the product rule. -/
+lemma coordDeriv_riemann {n : ℕ} (g ginv : (Fin n → ℝ) → Tensor2 n) {x : Fin n → ℝ}
+    (hΓC2 : ∀ k i j, ContDiffAt ℝ 2 (fun y => christoffel g ginv y k i j) x)
+    (a r s m p : Fin n) :
+    CoordinateCurvature.coordDeriv a (fun y => riemann g ginv y r s m p) x =
+      CoordinateCurvature.coordDeriv a (fun y => CoordinateCurvature.coordDeriv m (fun z =>
+        christoffel g ginv z r p s) y) x
+        - CoordinateCurvature.coordDeriv a (fun y => CoordinateCurvature.coordDeriv p (fun z =>
+          christoffel g ginv z r m s) y) x
+        + ∑ c, (CoordinateCurvature.coordDeriv a (fun y => christoffel g ginv y r m c) x
+          * christoffel g ginv x c p s
+              + christoffel g ginv x r m c
+                * CoordinateCurvature.coordDeriv a (fun y => christoffel g ginv y c p s) x
+              - CoordinateCurvature.coordDeriv a (fun y => christoffel g ginv y r p c) x
+                * christoffel g ginv x c m s
+              - christoffel g ginv x r p c
+                * CoordinateCurvature.coordDeriv a (fun y => christoffel g ginv y c m s) x) := by
+  have hΓD : ∀ k i j, DifferentiableAt ℝ (fun y => christoffel g ginv y k i j) x :=
+    fun k i j => (hΓC2 k i j).differentiableAt two_ne_zero
+  have hdΓD : ∀ a k i j,
+      DifferentiableAt ℝ (fun y => CoordinateCurvature.coordDeriv a (fun z => christoffel g ginv z k
+        i j) y) x :=
+    fun a k i j => (contDiffAt_one_pd (hΓC2 k i j) a).differentiableAt one_ne_zero
+  simp only [riemann_apply]
+  have hsub : DifferentiableAt ℝ (fun y =>
+      CoordinateCurvature.coordDeriv m (fun z => christoffel g ginv z r p s) y
+        - CoordinateCurvature.coordDeriv p (fun z => christoffel g ginv z r m s) y) x :=
+    (hdΓD m r p s).sub (hdΓD p r m s)
+  have hsum : DifferentiableAt ℝ (fun y =>
+      ∑ c, (christoffel g ginv y r m c * christoffel g ginv y c p s
+        - christoffel g ginv y r p c * christoffel g ginv y c m s)) x :=
+    DifferentiableAt.fun_sum fun c _ =>
+      ((hΓD r m c).mul (hΓD c p s)).sub ((hΓD r p c).mul (hΓD c m s))
+  rw [coordDeriv_add a x (slice_differentiableAt a hsub) (slice_differentiableAt a hsum),
+    coordDeriv_sub a x (slice_differentiableAt a (hdΓD m r p s))
+      (slice_differentiableAt a (hdΓD p r m s)),
+    coordDeriv_sum a
+      (fun c y => christoffel g ginv y r m c * christoffel g ginv y c p s
+        - christoffel g ginv y r p c * christoffel g ginv y c m s) x
+      (fun c => slice_differentiableAt a
+        (((hΓD r m c).fun_mul (hΓD c p s)).fun_sub
+          ((hΓD r p c).fun_mul (hΓD c m s))))]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro c _
+  rw [coordDeriv_sub a x
+      (slice_differentiableAt a ((hΓD r m c).fun_mul (hΓD c p s)))
+      (slice_differentiableAt a ((hΓD r p c).fun_mul (hΓD c m s))),
+    coordDeriv_mul a x (slice_differentiableAt a (hΓD r m c))
+      (slice_differentiableAt a (hΓD c p s)),
+    coordDeriv_mul a x (slice_differentiableAt a (hΓD r p c))
+      (slice_differentiableAt a (hΓD c m s))]
+  ring
+
 /-- **General Second Bianchi Identity** in arbitrary coordinates and arbitrary
 dimension `n`: `∇_l R^ρ_{σμν} + ∇_μ R^ρ_{σνl} + ∇_ν R^ρ_{σlμ} = 0`. -/
 lemma second_bianchi {n : ℕ} (g ginv : (Fin n → ℝ) → Tensor2 n) {x : Fin n → ℝ}
@@ -827,12 +883,6 @@ lemma second_bianchi {n : ℕ} (g ginv : (Fin n → ℝ) → Tensor2 n) {x : Fin
     covDerivRiemann g ginv x l ρ σ μ ν
       + covDerivRiemann g ginv x μ ρ σ ν l
       + covDerivRiemann g ginv x ν ρ σ l μ = 0 := by
-  have hΓD : ∀ k i j, DifferentiableAt ℝ (fun y => christoffel g ginv y k i j) x :=
-    fun k i j => (hΓC2 k i j).differentiableAt two_ne_zero
-  have hdΓD : ∀ a k i j,
-      DifferentiableAt ℝ (fun y => CoordinateCurvature.coordDeriv a (fun z => christoffel g ginv z k
-        i j) y) x :=
-    fun a k i j => (contDiffAt_one_pd (hΓC2 k i j) a).differentiableAt one_ne_zero
   have hpdR : ∀ a r s m p : Fin n,
       CoordinateCurvature.coordDeriv a (fun y => riemann g ginv y r s m p) x =
         CoordinateCurvature.coordDeriv a (fun y => CoordinateCurvature.coordDeriv m (fun z =>
@@ -846,38 +896,8 @@ lemma second_bianchi {n : ℕ} (g ginv : (Fin n → ℝ) → Tensor2 n) {x : Fin
               - CoordinateCurvature.coordDeriv a (fun y => christoffel g ginv y r p c) x
                 * christoffel g ginv x c m s
               - christoffel g ginv x r p c
-                * CoordinateCurvature.coordDeriv a (fun y => christoffel g ginv y c m s) x) := by
-    intro a r s m p
-    simp only [riemann_apply]
-    have hsub : DifferentiableAt ℝ (fun y =>
-        CoordinateCurvature.coordDeriv m (fun z => christoffel g ginv z r p s) y
-          - CoordinateCurvature.coordDeriv p (fun z => christoffel g ginv z r m s) y) x :=
-      (hdΓD m r p s).sub (hdΓD p r m s)
-    have hsum : DifferentiableAt ℝ (fun y =>
-        ∑ c, (christoffel g ginv y r m c * christoffel g ginv y c p s
-          - christoffel g ginv y r p c * christoffel g ginv y c m s)) x :=
-      DifferentiableAt.fun_sum fun c _ =>
-        ((hΓD r m c).mul (hΓD c p s)).sub ((hΓD r p c).mul (hΓD c m s))
-    rw [coordDeriv_add a x (slice_differentiableAt a hsub) (slice_differentiableAt a hsum),
-      coordDeriv_sub a x (slice_differentiableAt a (hdΓD m r p s))
-        (slice_differentiableAt a (hdΓD p r m s)),
-      coordDeriv_sum a
-        (fun c y => christoffel g ginv y r m c * christoffel g ginv y c p s
-          - christoffel g ginv y r p c * christoffel g ginv y c m s) x
-        (fun c => slice_differentiableAt a
-          (((hΓD r m c).fun_mul (hΓD c p s)).fun_sub
-            ((hΓD r p c).fun_mul (hΓD c m s))))]
-    congr 1
-    apply Finset.sum_congr rfl
-    intro c _
-    rw [coordDeriv_sub a x
-        (slice_differentiableAt a ((hΓD r m c).fun_mul (hΓD c p s)))
-        (slice_differentiableAt a ((hΓD r p c).fun_mul (hΓD c m s))),
-      coordDeriv_mul a x (slice_differentiableAt a (hΓD r m c))
-        (slice_differentiableAt a (hΓD c p s)),
-      coordDeriv_mul a x (slice_differentiableAt a (hΓD r p c))
-        (slice_differentiableAt a (hΓD c m s))]
-    ring
+                * CoordinateCurvature.coordDeriv a (fun y => christoffel g ginv y c m s) x) :=
+    coordDeriv_riemann g ginv hΓC2
   have halg := second_bianchi_of
     (fun k i j => christoffel g ginv x k i j)
     (fun a k i j => CoordinateCurvature.coordDeriv a (fun y => christoffel g ginv y k i j) x)
