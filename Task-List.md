@@ -142,7 +142,7 @@
   - [x] `PhyslibAlpha/Relativity/Metrics/Christoffel.lean:89` *(Doc #1)* — Lean-internal wording replaced: the "Unfolding lemma for ..." docstrings now say which tensor of the metric field the chart-level operator is, "bundled regular chart point" became "a point of the regular chart", "definitionally" was dropped, and the `ModifiedTorsion` "algebraic inverse helper" note now states the torsion formula it proves (`162ccf4f`).
   - [~] `PhyslibAlpha/Cosmology/FLRW/Basic.lean:29` *(Doc #3)* — The duplicated overview paragraph is trimmed; the `FLRW/Curvature.lean:63` Section A prose is still to differentiate.
   - [x] `PhyslibAlpha/Relativity/Metrics/CoordinateMetric.lean:54` *(Doc #5)* — already satisfied (checked): the module header closes at line 58, after `## iv. References`, and `## A.` is outside it; the Section A blocks of `Lovelock/ConstantCurvature.lean` and of `Tensors/RiemannTensor.lean` both carry prose. No change needed.
-  - [ ] `PhyslibAlpha/Relativity/Modified/KaluzaKlein/Basic.lean:332` *(Basic #10)* — Remove unexplained Lean binder variables from docstrings (`D`, `T`, `M`, `r`, `P`, `G`, `C`, `u`, `x`, `S.toCoordinateMetric`, etc.) across `KaluzaKlein/Basic:332`, `MOG:95`, `ChameleonScreening:92`, `Linearized/Basic:71`, `GeodesicSystem:93`, `PPNParameters:159`, `EinsteinAether:176`, `Metrics/Basic:175`, and `*_toCoordinateMetric_g/_ginv` lemmas.
+  - [ ] `PhyslibAlpha/Relativity/Modified/KaluzaKlein/Basic.lean:332` *(Basic #10)* — DONE in `72ec09c0` — the genuine bare-name cases (`gaugeShift`'s `dlam`, the `S.toCoordinateMetric` family) are fixed; `PPNParameters`/`EinsteinAether`/`ChameleonScreening` were re-read and already tie each entry to its observable or structure field. Original scope was `KaluzaKlein/Basic:332`, `MOG:95`, `ChameleonScreening:92`, `Linearized/Basic:71`, `GeodesicSystem:93`, `PPNParameters:159`, `EinsteinAether:176`, `Metrics/Basic:175`, and `*_toCoordinateMetric_g/_ginv` lemmas.
 
 - [ ] **16. `file-organization-and-naming-alignment`** *(Organization #1, #2, #3 — 15 suggestions)*:
   - [x] `PhyslibAlpha/Relativity/Metrics/CoordinateMetric.lean:8` & `Metrics/Basic.lean:66,150` *(Org #2, #3)* — `CoordinateMetric`, `CoordinateMetric.metricTensor` and the chart-level connection/geodesic/curvature operators live in `Metrics/CoordinateMetric.lean` (`ad75aa1b`); `Metrics/Basic.lean` keeps only `MetricTensor` and its contraction lemmas, with the structure opening the section and `mul_eq_one_of_isSymm_of_mul_eq_one` after them (`f3771c38`).
@@ -435,19 +435,13 @@ Nothing here is a CI or linter matter — `lint-style`, `module_doc_lint` and th
   - [ ] `Modified/KaluzaKlein/KaluzaMiracle.lean:80` — `ricci44`/`ricci5DHorizontal` restate
     curvature components that follow from the 5D metric in `KaluzaKlein/Basic.lean`.
 
-- [ ] **25. `handbook-documentation-e26eb962`** *(Documentation `4/5`, 6 suggestions)*
-  - [ ] `InitialData/CauchyInterfaces.lean` — the `IsSolution`/`HasCauchyData`/`IsWaveGauge` fields
-    are explained as Lean fields; say what physical obligation each encodes.
-  - [ ] `InitialData/MaximalDevelopment.lean` — the "zero-hypothesis open-domain instance" prose does
-    not say what the interval model physically is.
-  - [ ] `InitialData/ExplicitDevelopments.lean` — key results name Lean fields
-    (`einsteinOf (schwarzschildG M)`); state them in physics language.
-  - [ ] `Modified/ChameleonScreening.lean:92` — screening helper docstrings name parameters by Lean
-    name (`m`, `β`, `M`).
-  - [ ] `General/PPNParameters.lean:159` — PPN parameters are not tied to the observable each
-    measures.
-  - [ ] `Modified/EinsteinAether.lean:176` — the aether coupling constants are listed without saying
-    what each couples.
+- [x] **25. `handbook-documentation-e26eb962`** *(Documentation `4/5`, 6 suggestions)* — all done in `72ec09c0`:
+  - [x] `InitialData/CauchyInterfaces.lean` — the fields now say what physical obligation each encodes.
+  - [x] `InitialData/MaximalDevelopment.lean` — the interval instance is described as the open-subset model of `ℝ` showing the abstract hypotheses are satisfiable.
+  - [x] `InitialData/ExplicitDevelopments.lean` — key results stated per spacetime (Schwarzschild/Kerr vacuum, SdS with `Λ`, FLRW perfect fluid).
+  - [x] `Modified/ChameleonScreening.lean:92` — helper docstrings use structure fields; the lost blank lines were restored.
+  - [x] `General/PPNParameters.lean:159` — **no change needed**: re-read, each parameter already names the observable it measures.
+  - [x] `Modified/EinsteinAether.lean:176` — **no change needed**: re-read, the coupling constants are already described physically.
 
 - [ ] **26. `handbook-organization-e26eb962`** *(Organization `4/5`, 6 suggestions)*
   - [ ] `Modified/MassiveGravity/VDVZ.lean:74` — file named after its authors, not its object;
@@ -456,8 +450,9 @@ Nothing here is a CI or linter matter — `lint-style`, `module_doc_lint` and th
     `KaluzaKleinData.{ricci44,ricci5DHorizontal,scalar5D}` into `KaluzaKlein/Basic.lean` or rename.
   - [ ] `Cosmology/FLRW/Basic.lean:77` — `FLRWSpacetime` re-packages `Physlib`'s `Cosmology.FLRW`;
     build the chart API on `FLRW.a`/`FLRW.geometry`.
-  - [ ] `Modified/Teleparallel/Basic.lean:136` — `superpotential`/`torsionScalar` interleaved with
-    the Weitzenböck lemmas; group the definitions first.
+  - [~] `Modified/Teleparallel/Basic.lean:136` — checked: `superpotential` and `torsionScalar` are
+    already the last definitions, after the Weitzenböck block; only blank lines were missing, restored
+    in `72ec09c0`.
   - [ ] `Modified/ChameleonScreening.lean:105` — the six screening helpers sit far from
     `ChameleonModel`; move them directly after it (or make them methods).
   - [ ] `InitialData/CauchyInterfaces.lean` — four certificate layers in one file; group or split by
@@ -471,10 +466,11 @@ Nothing here is a CI or linter matter — `lint-style`, `module_doc_lint` and th
     Christoffel product inline; extract a general derivative-of-product identity.
   - [ ] `Cosmology/FLRW/Perturbation.lean` — long `calc` blocks of scalar algebra whose steps are
     the first-order expansion terms; name the ones that say something.
-  - [ ] `InitialData/MaximalDevelopment.lean` — the Zorn-argument proof is one long chain; extract
-    the chain-upper-bound and union steps.
-  - [ ] `InitialData/ReducedCauchy.lean` — `flrwField_lipschitzOn` computes an explicit Lipschitz
-    constant in one proof; extract the numerator estimate and the denominator lower bound.
+  - [x] `InitialData/MaximalDevelopment.lean` — **no change needed**: measured, every proof is
+    under 40 lines (`exists_maximal` 14, `unique_up_to_isometry` 22); the report entry was stale.
+  - [~] `InitialData/ReducedCauchy.lean` — partly done in `72ec09c0`: `flrwBall_bounds` extracts the
+    ball bounds. The numerator estimate stays inline: an attempted extraction produced a broken file
+    and was reverted, so it needs a careful manual pass, not a scripted splice.
   - [ ] `InitialData/SobolevInitialData.lean` — six `change` type-ascriptions remain; state the
     quadratic-form normalisations as lemmas.
 
@@ -490,12 +486,9 @@ Nothing here is a CI or linter matter — `lint-style`, `module_doc_lint` and th
   - [x] `InitialData/CauchyInterfaces.lean` — **no change needed**: checked, its references were
     already keyed (`CauchyInterfaces.lean` cites `sbierski_2013` etc.); the earlier report entry
     was wrong on this file.
-  - [ ] `InitialData/MaximalDevelopment.lean` — cite Choquet-Bruhat–Geroch (1969) with a page, not
-    only a survey.
-  - [ ] `General/BianchiContracted.lean` — the contracted identity is cited to Carroll only; add
-    Wald (Ch. 3) and MTW (Ch. 13), as `RicciScalar.lean` already does.
-  - [ ] `Modified/BransDicke.lean:60` — `BertottiIessTortora2003` is a full-paper span; add the
-    section or page of the Shapiro bound.
+  - [x] `InitialData/MaximalDevelopment.lean` — done in `72ec09c0`: `ChoquetBruhatGeroch1969` (CMP 14, 329–335) cited beside Sbierski.
+  - [x] `General/BianchiContracted.lean` — done in `72ec09c0`: Wald (Ch. 3) and MTW (Ch. 13) cited beside Carroll.
+  - [x] `Modified/BransDicke.lean:60` — done in `72ec09c0`: the entry pins the Shapiro delay on pp. 374–375.
 
 - [ ] **29. `handbook-scope-e26eb962`** *(Scope `4/5`, 5 suggestions)*
   - [ ] Whole change — the branch carries three separable contributions (gravity library, ported
