@@ -495,7 +495,7 @@ lemma contDiffAt_flrwField (Λ a₀ v₀ : ℝ) (ha₀ : a₀ ≠ 0) :
 
 /-- The ball `closedBall (a₀, v₀) (|a₀| / 2)` keeps the first coordinate away from
 zero and bounds both coordinates, uniformly in the point. -/
-private lemma flrwBall_bounds (a₀ v₀ : ℝ) (ha₀ : a₀ ≠ 0) {p : ℝ × ℝ}
+private lemma flrwBall_bounds (a₀ v₀ : ℝ) {p : ℝ × ℝ}
     (hp : p ∈ closedBall (a₀, v₀) (|a₀| / 2)) :
     |a₀| / 2 ≤ |p.1| ∧ |p.1| ≤ 3 * |a₀| / 2 ∧ |p.2| ≤ |v₀| + |a₀| / 2 := by
   rw [mem_closedBall, dist_eq_norm, Prod.norm_def] at hp
@@ -524,8 +524,8 @@ lemma flrwField_lipschitzOn (Λ a₀ v₀ : ℝ) (ha₀ : a₀ ≠ 0) :
   refine ⟨K, ?_⟩
   rw [lipschitzOnWith_iff_dist_le_mul]
   intro p hp q hq
-  obtain ⟨hp1_lb, hp1_ub, hp2_ub⟩ := flrwBall_bounds a₀ v₀ ha₀ hp
-  obtain ⟨hq1_lb, hq1_ub, hq2_ub⟩ := flrwBall_bounds a₀ v₀ ha₀ hq
+  obtain ⟨hp1_lb, hp1_ub, hp2_ub⟩ := flrwBall_bounds a₀ v₀ hp
+  obtain ⟨hq1_lb, hq1_ub, hq2_ub⟩ := flrwBall_bounds a₀ v₀ hq
   have ha_pos : 0 < |a₀| := abs_pos.mpr ha₀
   have hp1_ne : p.1 ≠ 0 := abs_pos.mp (by linarith)
   have hq1_ne : q.1 ≠ 0 := abs_pos.mp (by linarith)
